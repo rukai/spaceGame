@@ -40,7 +40,7 @@ void setup(){
         result += "color(0x" + hex(image.pixels[i]) + "),";
 
         //adds a \n at new lines of the image for clarity
-        if((i + 1) % width == 0){
+        if((i + 1) % image.width == 0){
           result += "\n  ";
         }
       }
