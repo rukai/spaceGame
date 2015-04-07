@@ -1,12 +1,9 @@
-class Wormhole{
-  int x;
-  int y;
-  int diameter;
-  boolean expanding = true;
+class Wormhole extends Actor{
+  private boolean expanding = true;
 
   public Wormhole(){
-    x = (int) random(width); //probs between zero and one
-    y = (int) random(height);
+    x = random(width);
+    y = random(height);
     diameter = 0;
   }
 
@@ -26,18 +23,6 @@ class Wormhole{
     else{
       diameter--;
     }
-  }
-
-  public int getX(){
-    return x;
-  }
-  
-  public int getY(){
-    return y;
-  }
-
-  public int getDiameter(){
-    return diameter;
   }
 
   public void warp(){

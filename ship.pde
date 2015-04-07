@@ -1,9 +1,13 @@
-public class Ship{
-  float x = 300;
-  float y = 300;
-  float direction = 0;
-  float increment = 1;
-  float speed = 2; // 5 is default
+public class Ship extends Actor{
+  private float direction = 0;
+  private float increment = 1;
+  private float speed = 3; // 5 is default
+
+  public Ship(){
+    x = 300;
+    y = 300;
+    diameter = 25;
+  }
 
   /*
    * All actions of the ship over a frame
@@ -51,13 +55,5 @@ public class Ship{
 
   public float getDirection(){
     return direction;
-  }
-
-  public float getX(){
-    return x;
-  }
-  
-  public float getY(){
-    return y;
   }
 }
