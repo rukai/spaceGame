@@ -1,4 +1,4 @@
-public class Actor{
+public abstract class Actor{
   protected float x = 0;
   protected float y = 0;
   protected int diameter = 0;
