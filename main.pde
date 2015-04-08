@@ -2,6 +2,7 @@ import java.lang.Math.*;
 
 Wormhole wormhole;
 Ship ship;
+PGraphics backgroundGraphic;
 
 void setup(){
   size(600, 600);
@@ -31,11 +32,24 @@ void keyPressed(){
   ship.swapDirection();
 }
 
+/*
+ * Generate a new background stored in the backgroundGraphic variable.
+ */
 void setupStars(){
+  backgroundGraphic = createGraphics(width, height);
+
+  backgroundGraphic.background(10);
+  for(int i = 0; i < 100; i++){
+    backgroundGraphic.beginDraw();
+    backgroundGraphic.fill(#FFFFFF);
+    backgroundGraphic.stroke(#FFFFFF);
+    backgroundGraphic.point(random(width), random(height));
+    backgroundGraphic.endDraw();
+  }
 }
 
 void graphics(){
-  background(10);
+  background(backgroundGraphic);
 
   //draw wormholes
   int d = wormhole.getDiameter();
