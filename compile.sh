@@ -10,4 +10,4 @@ cd ..
 
 #Combine all source code
 mkdir -p ass2
-cat main.pde actor.pde ship.pde wormhole.pde compiledGraphics.pde > ass2/ass2.pde
+cat wth.pde main.pde actor.pde ship.pde wormhole.pde blackhole.pde background.pde compiledGraphics.pde > ass2/ass2.pde
