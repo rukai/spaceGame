@@ -3,13 +3,14 @@ import java.lang.Math.*;
 Wormhole wormhole;
 Blackhole[] blackholes = {new Blackhole(100, 40), new Blackhole(400, 500)};
 Ship ship;
-PGraphics backgroundGraphic;
+Background theBackground = null;
 int score = 0;
 boolean gameover = false;
 
 void setup(){
   size(600, 600);
   loadGraphics();
+  theBackground = new Background(); //background is already a method
   setupArea();
 }
 
@@ -30,7 +31,7 @@ void draw(){
 }
 
 void setupArea(){
-  setupStars();
+  theBackground.newLocation();
   wormhole = new Wormhole();
   ship = new Ship();
 }
@@ -39,31 +40,14 @@ void keyPressed(){
   ship.swapDirection();
 }
 
-/*
- * Generate a new background stored in the backgroundGraphic variable.
- */
-void setupStars(){
-  backgroundGraphic = createGraphics(width, height);
-
-  backgroundGraphic.background(10);
-  for(int i = 0; i < 100; i++){
-    backgroundGraphic.beginDraw();
-    backgroundGraphic.fill(#FFFFFF);
-    backgroundGraphic.stroke(#FFFFFF);
-    //Do we need to avoid stars being placed on the same pixel?
-    //"You must use loops and arrays to get full marks for this part." - Do we really need arrays?
-    backgroundGraphic.point(random(width), random(height));
-    backgroundGraphic.endDraw();
-  }
-}
 
 void graphics(){
 
   if(gameover){
-    background(backgroundGraphic);
+    background(theBackground.getBackground());
   }
   else{
-    background(backgroundGraphic);
+    background(theBackground.getBackground());
 
     //draw wormholes
     int d = wormhole.getDiameter();
