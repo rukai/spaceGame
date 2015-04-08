@@ -1,7 +1,7 @@
 public class Ship extends Actor{
   private float direction = 0;
   private float increment = 1;
-  private float speed = 3; // 5 is default
+  private float speed = 5; // 5 is default
 
   public Ship(){
     x = 300;
