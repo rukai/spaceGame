@@ -1,9 +1,10 @@
 class Wormhole extends Actor{
   private boolean expanding = true;
+  final int MAX_DIAMETER = 80;
 
   public Wormhole(){
-    x = random(width);
-    y = random(height);
+    x = random(MAX_DIAMETER/2, WIDTH - MAX_DIAMETER/2);
+    y = random(MAX_DIAMETER/2, HEIGHT - MAX_DIAMETER/2);
     diameter = 0;
   }
 
@@ -12,7 +13,7 @@ class Wormhole extends Actor{
     if(diameter == 0){
       expanding = true;
     }
-    else if(diameter == 80){
+    else if(diameter == MAX_DIAMETER){
       expanding = false;
     }
 

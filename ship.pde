@@ -40,15 +40,15 @@ public class Ship extends Actor{
     int shipW = shipGraphic.width;
     int shipH = shipGraphic.height;
     if(x < -shipW/2){
-      x = width + shipW/2;
+      x = WIDTH + shipW/2;
     }
-    else if(x > width + shipW/2){
+    else if(x > WIDTH + shipW/2){
       x = 0 - shipW/2;
     }
     else if(y < -shipH/2){
-      y = height + shipH/2;
+      y = HEIGHT + shipH/2;
     }
-    else if(y > height + shipH/2){
+    else if(y > HEIGHT + shipH/2){
       y = 0 - shipH/2;
     }
   }
