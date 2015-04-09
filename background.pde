@@ -1,21 +1,46 @@
-class Background{
+class Background extends Thread{
   float i = 0;
   color[] colors = null;
   PGraphics spiral = null;
   PGraphics stars = null;
   PGraphics background = null;
-  float spiralPhase;
+  PGraphics newBackground = null;
+  int spiralPower;
+  float spiralPhase = 0; 
+  int spiralDirection = 1; // a multiplier (-1 or 1) to change the direction of the spiral
+  int phaseDirection = 1; // a multiplier (-1 or 1) to change the direction of the spiral's phase
+  boolean backgroundRendered = false;
+  boolean renderNewBackground = true;
   
   public Background(){
     colors = generateColors();
-    newLocation();
   }
-  
+
+  /*
+   * Code to be run from another thread
+   */
+  public void run(){
+    while(true){
+      try{
+        Thread.sleep(10);
+      }
+      catch(InterruptedException e){
+      }
+      if(renderNewBackground){
+        newLocation();
+        renderNewBackground = false;
+      }
+    }
+  }
+
   /*
    * Generates a fresh background
    */
-  public void newLocation(){
+  private void newLocation(){
     spiralPhase = random(PI*2);
+    spiralDirection = (int(random(2)) == 0) ? 1 : -1;
+    phaseDirection = (int(random(2)) == 0) ? 1 : -1;
+    spiralPower = (int) random(70, 200);
     stars = generateStars();
 
     updateBackground();
@@ -23,23 +48,34 @@ class Background{
 
   /*
    * Generates next frame of background animation
+   * The code worked well, but was unappealling visually so I'll leave it here for now.
    */
-  public void updateBackground(){
-    spiralPhase += 0.1;
-    spiral = generateSpiral(random(PI*2));
+  private void updateBackground(){
+    spiral = generateSpiral(spiralPhase);
+    spiralPhase += 0.1 * phaseDirection;
 
-    background = createGraphics(width, height);
-    background.beginDraw();
-    background.image(spiral, 0, 0);
-    background.image(stars, 0, 0);
-    background.endDraw();
+    PGraphics tmpbg = createGraphics(width, height);
+    tmpbg.beginDraw();
+    tmpbg.image(spiral, 0, 0);
+    tmpbg.image(stars, 0, 0);
+    tmpbg.endDraw();
+    background = tmpbg;
+    backgroundRendered = true;
   }
 
   /*
    * Returns the current background.
    */
-  public PGraphics getBackground(){
-    return background;
+  public PImage getBackground(){
+    try{
+      while(!backgroundRendered){
+        Thread.sleep(10);
+      }
+    }
+    catch(InterruptedException e){
+    }
+    renderNewBackground = true;
+    return background.get();
   }
 
   /*
@@ -60,19 +96,22 @@ class Background{
    * Returns a spiral on a black background
    */
   public PGraphics generateSpiral(float phase){
+
     PGraphics spiral = createGraphics(width, height);
     spiral.beginDraw();
     spiral.background(10);
 
     for(int colorIndex = 0; colorIndex < colors.length; colorIndex++){
-      for(float i = 0; i < 2000; i += 0.2){
+      for(float i = 0; i < 2000; i += 0.4){
         int colorsUsed = (int) Math.floor((colors.length * i / 2000));
         if(colorIndex > colorsUsed){
           continue;
         }
-        int diameter = colorsUsed - colorIndex+1;
-        float xPixel = (i*cos(i/100 + phase))/5 + 300;
-        float yPixel = (i*sin(i/100 + phase))/5 + 300;
+        int diameter = colorsUsed - colorIndex + 1;
+        i *= spiralDirection;
+        float xPixel = (i*cos((i+500)/spiralPower + phase))/5 + 300;
+        float yPixel = (i*sin((i+500)/spiralPower + phase))/5 + 300;
+        i *= spiralDirection;
         spiral.stroke(colors[colorIndex]);
         spiral.ellipse(xPixel, yPixel, diameter, diameter);
       }

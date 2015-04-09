@@ -8,11 +8,13 @@ int score = 0;
 int highscore = 0;
 boolean highscoreSet = false;
 boolean gameover = false;
+PImage backgroundGraphic = null;
 
 void setup(){
   size(600, 600);
   loadGraphics();
   theBackground = new Background(); //background is already a method
+  theBackground.start();
   newGame();
 }
 
@@ -45,9 +47,9 @@ void draw(){
  * Reset variables for a new level to be played.
  */
 void newLevel(){
-  theBackground.newLocation();
   wormhole = new Wormhole();
   ship = new Ship();
+  backgroundGraphic = theBackground.getBackground();
 }
 
 /*
@@ -75,7 +77,7 @@ void keyPressed(){
  * Renders the graphics of the game
  */
 void renderGame(){
-  background(theBackground.getBackground());
+  background(backgroundGraphic);
 
   //draw wormholes
   int d = wormhole.getDiameter();
