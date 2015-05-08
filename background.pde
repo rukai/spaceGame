@@ -1,16 +1,17 @@
 class Background extends Thread{
   float i = 0;
-  color[] colors = null;
-  PGraphics spiral = null;
-  PGraphics stars = null;
-  PGraphics background = null;
-  PGraphics newBackground = null;
+  color[] colors;
+  PGraphics spiral;
+  PGraphics stars;
+  PGraphics background;
+  PGraphics newSpiral;
   int spiralPower;
   float spiralPhase = 0; 
   int spiralDirection = 1; // a multiplier (-1 or 1) to change the direction of the spiral
   int phaseDirection = 1; // a multiplier (-1 or 1) to change the direction of the spiral's phase
   boolean backgroundRendered = false;
   boolean renderNewBackground = true;
+  boolean[][] starArrangement;
   
   public Background(){
     colors = generateColors();
@@ -37,22 +38,22 @@ class Background extends Thread{
    * Generates a fresh background
    */
   private void newLocation(){
-    spiralPhase = random(PI*2);
-    spiralDirection = (int(random(2)) == 0) ? 1 : -1;
-    phaseDirection = (int(random(2)) == 0) ? 1 : -1;
-    spiralPower = (int) random(70, 200);
+    newStarArrangement();
     stars = generateStars();
 
+    if(newSpiral == null){
+      newSpiral = generateSpiral(spiralPhase);
+    }
+    spiral = newSpiral;
+    newSpiral = generateSpiral(spiralPhase);
     updateBackground();
   }
 
   /*
-   * Generates next frame of background animation
-   * The code worked well, but was unappealling visually so I'll leave it here for now.
+   * Generates the next frame of the background
    */
   private void updateBackground(){
-    spiral = generateSpiral(spiralPhase);
-    spiralPhase += 0.1 * phaseDirection;
+    stars = generateStars();
 
     PGraphics tmpbg = createGraphics(width, height);
     tmpbg.beginDraw();
@@ -64,7 +65,7 @@ class Background extends Thread{
   }
 
   /*
-   * Returns the current background.
+   * Returns the next background frame (update stars)
    */
   public PImage getBackground(){
     try{
@@ -74,14 +75,18 @@ class Background extends Thread{
     }
     catch(InterruptedException e){
     }
-    renderNewBackground = true;
+    updateBackground();
     return background.get();
+  }
+
+  public void setNewLocation(){
+    renderNewBackground = true;
   }
 
   /*
    * Returns an array of colors with a transition from dark blue to white
    */
-  public int[] generateColors(){
+  private int[] generateColors(){
     final int MAX_COLOR = 160;
     color[] colors = new color[20];
     for(int i = 0; i < colors.length; i++){
@@ -95,7 +100,12 @@ class Background extends Thread{
   /*
    * Returns a spiral on a black background
    */
-  public PGraphics generateSpiral(float phase){
+  private PGraphics generateSpiral(float phase){
+    //set rendering variables
+    spiralPhase = random(PI*2);
+    spiralDirection = (int(random(2)) == 0) ? 1 : -1;
+    phaseDirection = (int(random(2)) == 0) ? 1 : -1;
+    spiralPower = (int) random(70, 200);
 
     PGraphics spiral = createGraphics(width, height);
     spiral.beginDraw();
@@ -121,18 +131,30 @@ class Background extends Thread{
   }
 
   /*
-   * Generate a new background of stars
+   * Generates a new arrangement of stars and stores them in an array.
    */
-  public PGraphics generateStars(){
+  private void newStarArrangement(){
+    starArrangement = new boolean[width][height];
+    for(int i = 0; i < 100; i++){
+      starArrangement[(int) random(width)][(int) random(height)] = true;
+    }
+  }
+
+  /*
+   * Generate next frame of star background
+   */
+  private PGraphics generateStars(){
     PGraphics backgroundGraphic = createGraphics(width, height);
 
     backgroundGraphic.beginDraw();
-    //Do we need to avoid stars being placed on the same pixel?
-    //"You must use loops and arrays to get full marks for this part." - Do we really need arrays?
-    for(int i = 0; i < 100; i++){
-      backgroundGraphic.fill(#FFFFFF);
-      backgroundGraphic.stroke(#FFFFFF);
-      backgroundGraphic.point(random(width), random(height));
+    for(int y = 0; y < starArrangement.length; y++){
+      for(int x = 0; x < starArrangement[y].length; x++){
+        if(starArrangement[y][x]){
+          backgroundGraphic.colorMode(HSB, 100);
+          backgroundGraphic.stroke(random(100), 50, 100, random(255));
+          backgroundGraphic.point(x, y);
+        }
+      }
     }
     backgroundGraphic.endDraw();
     return backgroundGraphic;

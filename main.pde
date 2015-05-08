@@ -53,7 +53,7 @@ void draw(){
 void newLevel(){
   wormhole = new Wormhole();
   ship = new Ship();
-  backgroundGraphic = theBackground.getBackground();
+  theBackground.setNewLocation();
 }
 
 /*
@@ -81,7 +81,7 @@ void keyPressed(){
  * Renders the graphics of the game
  */
 void renderGame(){
-  background(backgroundGraphic);
+  background(theBackground.getBackground());
 
   //draw wormholes
   int d = wormhole.getDiameter();
