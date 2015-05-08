@@ -25,9 +25,10 @@ void setup(){
     String ext = f.getName().substring(extIndex+1);
 
     if(ext.equals("png")){
+      System.out.println("image: " + f.getName());
 
       //declare variablse
-      variableDeclarations += "PImage " + name + "Graphic;\n";
+      variableDeclarations += "PGraphics " + name + "Graphic;\n";
 
       //grab file
       image = loadImage(f.getPath());
@@ -40,14 +41,17 @@ void setup(){
         result += "color(0x" + hex(image.pixels[i]) + "),";
 
         //adds a \n at new lines of the image for clarity
-        if((i + 1) % image.width == 0){
+        int widthCount = (i + 1) % image.width;
+        int lineCount = (i + 1) / image.width;
+        if(widthCount == 0){
           result += "\n  ";
+          System.out.println("Line: " + lineCount);
         }
       }
       result += "};\n\n";
 
       //load graphic into an image
-      result += "  " + name + "Graphic = createImage(" + image.width + ", " + image.height + ", ARGB);\n";
+      result += "  " + name + "Graphic = createGraphics(" + image.width + ", " + image.height + ");\n";
       result += "  " + name + "Graphic.pixels = " + name + "GraphicArray;\n";
       result += "  " + name + "Graphic.updatePixels();\n";
     }
