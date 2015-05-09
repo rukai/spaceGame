@@ -2,7 +2,7 @@ import java.lang.Math.*;
 
 Wormhole wormhole;
 Blackhole[] blackholes = {new Blackhole(100, 40), new Blackhole(400, 500)};
-Ship ship;
+Ship ship = new Ship();
 Background theBackground = null;
 int parallaxOffsetX = 0;
 int parallaxOffsetY = 0;
@@ -56,7 +56,6 @@ void newLevel(){
   parallaxOffsetX = 0;
   parallaxOffsetY = 0;
   wormhole = new Wormhole();
-  ship = new Ship();
   theBackground.setNewLocation();
 }
 
@@ -64,11 +63,12 @@ void newLevel(){
  * Reset variables for a new game to be played.
  */
 void newGame(){
-  newLevel();
-
   gameover = false;
   score = 0;
   highscoreSet = false;
+  ship = new Ship();
+
+  newLevel();
 }
 
 void keyPressed(){
