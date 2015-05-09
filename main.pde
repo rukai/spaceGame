@@ -110,11 +110,26 @@ void renderGame(){
   //draw score
   textSize(16);
   textAlign(LEFT);
-  fill(#20F020);
-  rect(0, height-30, width, height-1);
+  stroke(#838383);
+  fill(#afafaf);
+  int HUDY = height-30;
+  rect(0, HUDY, width, height-1);
+
+  //text decoration
+  //shadow
+  stroke(#3e3e3e);
+  fill(#ff00ff);//The fill should never be seen
+  rect(5, HUDY + 5, 100, 22);
+  rect(126, HUDY + 5, 145, 22);
+  //main
+  stroke(#838383);
+  fill(#afafaf);
+  rect(4, HUDY + 4, 100, 22);
+  rect(125, HUDY + 4, 145, 22);
+  
   fill(0);
-  text("Score: " + score, 10, height-10);
-  text("High Score: " + highscore, 100, height-10);
+  text("Score: " + score, 10, HUDY+20);
+  text("High Score: " + highscore, 130, HUDY+20);
 }
 
 /*
