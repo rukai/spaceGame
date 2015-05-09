@@ -4,6 +4,8 @@ Wormhole wormhole;
 Blackhole[] blackholes = {new Blackhole(100, 40), new Blackhole(400, 500)};
 Ship ship;
 Background theBackground = null;
+int parallaxOffsetX = 0;
+int parallaxOffsetY = 0;
 int score = 0;
 int highscore = 0;
 boolean highscoreSet = false;
@@ -51,6 +53,8 @@ void draw(){
  * Reset variables for a new level to be played.
  */
 void newLevel(){
+  parallaxOffsetX = 0;
+  parallaxOffsetY = 0;
   wormhole = new Wormhole();
   ship = new Ship();
   theBackground.setNewLocation();
@@ -68,12 +72,30 @@ void newGame(){
 }
 
 void keyPressed(){
-  ship.swapDirection();
 
-  //start a new game
-  if(gameover && key == ' '){
-    gameover = false;
-    newGame();
+  if(gameover){
+    //start a new game
+    if(key == ' '){
+      gameover = false;
+      newGame();
+    }
+  }
+  else{
+    if(key == 'w'){
+      parallaxOffsetY++;
+    }
+    else if(key == 's'){
+      parallaxOffsetY--;
+    }
+    else if(key == 'a'){
+      parallaxOffsetX--;
+    }
+    else if(key == 'd'){
+      parallaxOffsetX++;
+    }
+    else{
+      ship.swapDirection();
+    }
   }
 }
 
@@ -81,7 +103,8 @@ void keyPressed(){
  * Renders the graphics of the game
  */
 void renderGame(){
-  background(theBackground.getBackground());
+  background(0);
+  image(theBackground.getBackground(), parallaxOffsetX, parallaxOffsetY);
 
   //draw wormholes
   int d = wormhole.getDiameter();
