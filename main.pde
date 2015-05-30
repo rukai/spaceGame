@@ -103,8 +103,9 @@ void keyPressed(){
  * Renders the graphics of the game
  */
 void renderGame(){
-  background(0);
-  image(theBackground.getBackground(), parallaxOffsetX, parallaxOffsetY);
+  background(10);
+  PImage bg = theBackground.getBackground();
+  image(bg, parallaxOffsetX, parallaxOffsetY);
 
   //draw wormholes
   int d = wormhole.getDiameter();
@@ -131,26 +132,20 @@ void renderGame(){
   }
 
   //draw score
+  //main HUD bar
   textSize(16);
   textAlign(LEFT);
-  stroke(#838383);
-  fill(#afafaf);
+  noStroke();
+  fill(#822B66);
   int HUDY = height-30;
   rect(0, HUDY, width, height-1);
 
-  //text decoration
-  //shadow
-  stroke(#3e3e3e);
-  fill(#ff00ff);//The fill should never be seen
-  rect(5, HUDY + 5, 100, 22);
-  rect(126, HUDY + 5, 145, 22);
   //main
-  stroke(#838383);
-  fill(#afafaf);
+  fill(#611047);
   rect(4, HUDY + 4, 100, 22);
   rect(125, HUDY + 4, 145, 22);
   
-  fill(0);
+  fill(#C382AE);
   text("Score: " + score, 10, HUDY+20);
   text("High Score: " + highscore, 130, HUDY+20);
 }
