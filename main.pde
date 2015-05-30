@@ -14,8 +14,7 @@ PImage backgroundGraphic = null;
 
 //Constants to define the width and height of the game area (Not the window)
 final int WIDTH = 600;
-final int HEIGHT = 600;
-
+final int HEIGHT = 600; 
 void setup(){
   size(600, 630);
   loadGraphics();
@@ -53,8 +52,8 @@ void draw(){
  * Reset variables for a new level to be played.
  */
 void newLevel(){
-  parallaxOffsetX = 0;
-  parallaxOffsetY = 0;
+  parallaxOffsetX = -100;
+  parallaxOffsetY = -100;
   wormhole = new Wormhole();
   theBackground.setNewLocation();
 }

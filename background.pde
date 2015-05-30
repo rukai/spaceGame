@@ -12,6 +12,8 @@ class Background extends Thread{
   boolean backgroundRendered = false;
   boolean renderNewBackground = true;
   boolean[][] starArrangement;
+  final int BG_WIDTH = 800;
+  final int BG_HEIGHT = 800;
   
   public Background(){
     colors = generateColors();
@@ -55,10 +57,10 @@ class Background extends Thread{
   private void updateBackground(){
     stars = generateStars();
 
-    PGraphics tmpbg = createGraphics(width, height);
+    PGraphics tmpbg = createGraphics(BG_WIDTH, BG_HEIGHT);
     tmpbg.beginDraw();
     tmpbg.image(spiral, 0, 0);
-    tmpbg.image(stars, 0, 0);
+    tmpbg.image(stars, 100, 100);
     tmpbg.endDraw();
     background = tmpbg;
     backgroundRendered = true;
@@ -107,7 +109,7 @@ class Background extends Thread{
     phaseDirection = (int(random(2)) == 0) ? 1 : -1;
     spiralPower = (int) random(70, 200);
 
-    PGraphics spiral = createGraphics(width, height);
+    PGraphics spiral = createGraphics(BG_WIDTH, BG_HEIGHT);
     spiral.beginDraw();
     spiral.background(10);
 
@@ -119,8 +121,8 @@ class Background extends Thread{
         }
         int diameter = colorsUsed - colorIndex + 1;
         i *= spiralDirection;
-        float xPixel = (i*cos((i+500)/spiralPower + phase))/5 + 300;
-        float yPixel = (i*sin((i+500)/spiralPower + phase))/5 + 300;
+        float xPixel = (i*cos((i+500)/spiralPower + phase))/5 + BG_WIDTH/2;
+        float yPixel = (i*sin((i+500)/spiralPower + phase))/5 + BG_HEIGHT/2;
         i *= spiralDirection;
         spiral.stroke(colors[colorIndex]);
         spiral.ellipse(xPixel, yPixel, diameter, diameter);
